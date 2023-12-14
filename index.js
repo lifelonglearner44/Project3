@@ -72,9 +72,9 @@ app.get('/pages-about.html', (req, res) => {
   res.sendFile(path.join(__dirname, '/pages-about.html'));
 });
 
-// recipies page view
-app.get('/pages-recipies.html', (req, res) => {
-  res.sendFile(path.join(__dirname, '/pages-recipies.html'));
+// recipes page view
+app.get('/pages-recipes.html', (req, res) => {
+  res.sendFile(path.join(__dirname, '/pages-recipes.html'));
 });
 // FAQ page view
 app.get('/pages-faq.html', (req, res) => {
@@ -104,7 +104,7 @@ app.get('/users-profile.html', (req, res) => {
   res.sendFile(path.join(__dirname, '/users-profile.html'));
 });
 
-//  recipies page with ejs
+//  recipes page with ejs
 app.get('/recipes.ejs', async (req, res) => {
   try {
     const data = await knex.select().from('Recipes');
@@ -118,7 +118,7 @@ app.get('/recipes.ejs', async (req, res) => {
   }
 });
 
-//  saved recipies page with ejs
+//  saved recipes page with ejs
 app.get('/savedRecipes.ejs', async (req, res) => {
   try {
     const data = await knex
