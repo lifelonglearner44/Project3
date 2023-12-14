@@ -85,7 +85,7 @@
       <div class="breadcrumbs">
         <div class="container">
           <div class="d-flex justify-content-between align-items-center">
-            <h2>About</h2>
+            <h2>Recipies</h2>
             <!-- <ol>
               <li><a href="index.html">Home</a></li>
               <li>Sample Inner Page</li>
@@ -94,91 +94,146 @@
         </div>
       </div>
       <!-- End Breadcrumbs -->
-      <!-- ======= About Section ======= -->
-      <section id="about" class="about">
-        <div class="container" data-aos="fade-up">
-          <div class="section-header">
-            <h2>About Us</h2>
-            <p>
-              Learn More
-              <span>About Us</span>
-            </p>
-          </div>
-
-          <div class="row gy-4">
-            <div
-              class="col-lg-7 position-relative about-img"
-              style="
-                background-repeat: no-repeat;
-                background-position: center;
-                background-image: url(assets/img/about.jpg);
-                width: 50%;
-              "
-              data-aos="fade-up"
-              data-aos-delay="150"
-            >
-              <!-- <div class="call-us position-absolute">
-            <h4>Call us</h4>
-            <p>(801)-422-5167</p>
-          </div>
-             <div class="position-relative mt-4">
-            <img src="assets/img/about-2.jpg" class="img-fluid" alt="" />
-            <a
-              href="https://www.youtube.com/watch?v=LXb3EKWsInQ"
-              class="glightbox play-btn"
-            ></a>
-          </div>-->
-            </div>
-            <div
-              class="col-lg-5 d-flex align-items-end"
-              style="width: 50%"
-              data-aos="fade-up"
-              data-aos-delay="300"
-            >
-              <div class="content ps-0 ps-lg-5">
-                <p class="fst-italic">
-                  We are a team of BYU students who are passionate about
-                  supporting those with type 2 diabetes and enabling them to
-                  improve their quality of life through nutritional guidance.
-                  This website will provide the following nutritional tools to
-                  help you to succeed.
-                </p>
-                <ul>
-                  <li>
-                    <i class="bi bi-check2-all"></i>
-                    Dietician-crafted recipes that will be filling and flavorful
-                    without requiring lots of time or culinary skill.
-                  </li>
-                  <li>
-                    <i class="bi bi-check2-all"></i>
-                    A free account to save your favorite recipes so that you can
-                    quickly refer to them later.
-                  </li>
-                  <li>
-                    <i class="bi bi-check2-all"></i>
-                    A catalog of general nutritional advice for those with type
-                    2 diabetes.
-                  </li>
-                </ul>
-                <p>
-                  Start your journey to better health today. Explore our
-                  resources, create your free account, and take control of your
-                  nutritional well-being with confidence.
-                </p>
+      <!-- ======= Menu Section ======= -->
+      <section
+        style="display: flex; justify-content: center; align-items: center"
+      >
+        <div class="row">
+          <div class="col-lg-12">
+            <div class="card" style="border: none">
+              <div class="card-body">
+                <!-- Table with stripped rows -->
+                <div>
+                  <table style="width: 70%; margin-bottom: 0">
+                    <thead>
+                      <tr>
+                        <th
+                          style="
+                            border: 1px solid #dddddd;
+                            text-align: left;
+                            padding: 8px;
+                            width: 30%;
+                          "
+                        >
+                          Title
+                        </th>
+                        <th
+                          style="
+                            border: 1px solid #dddddd;
+                            text-align: left;
+                            padding: 8px;
+                            width: 40%;
+                          "
+                        >
+                          Instructions
+                        </th>
+                        <th
+                          style="
+                            border: 1px solid #dddddd;
+                            text-align: left;
+                            padding: 8px;
+                            width: 30%;
+                          "
+                        >
+                          Ingredients
+                        </th>
+                      </tr>
+                    </thead>
+                    <!-- ejs inserts -->
+                    <tbody>
+                      <% data.forEach(item => { %>
+                      <tr>
+                        <td
+                          style="
+                            border: 1px solid #dddddd;
+                            text-align: left;
+                            padding: 8px;
+                          "
+                        >
+                          <%= item.Title %>
+                        </td>
+                        <td
+                          style="
+                            border: 1px solid #dddddd;
+                            text-align: left;
+                            padding: 8px;
+                          "
+                        >
+                          <%- item.Instructions.replace(/\n/g, `
+                          <br />
+                          `) %>
+                        </td>
+                        <td
+                          style="
+                            border: 1px solid #dddddd;
+                            text-align: left;
+                            padding: 8px;
+                          "
+                        >
+                          <%- item.Ingredients.replace(/\n/g, `
+                          <br />
+                          `) %>
+                        </td>
+                      </tr>
+                      <% }); %>
+                    </tbody>
+                  </table>
+                  <!-- End Table with stripped rows -->
+                </div>
               </div>
             </div>
           </div>
         </div>
       </section>
-      <!-- End About Section -->
-      <section class="sample-page">
-        <div class="container" data-aos="fade-up">
-          <p>
-            You can duplicate this sample page and create any number of inner
-            pages you like!
-          </p>
+
+      <section class="section">
+        <div class="row">
+          <div class="col-lg-12">
+            <div class="card">
+              <div class="card-body">
+                <!-- Table with stripped rows -->
+                <div class="table-responsive">
+                  <table class="table datatable custom-table">
+                    <thead>
+                      <tr>
+                        <th>Title</th>
+                        <th>Instructions</th>
+                        <th>Ingredients</th>
+                      </tr>
+                    </thead>
+                    <!-- ejs inserts -->
+                    <tbody>
+                      <% data.forEach(item => { %>
+                      <tr>
+                        <td><%= item.Title %></td>
+                        <td>
+                          <%- item.Instructions.replace(/\n/g, `
+                          <br />
+                          `) %>
+                        </td>
+                        <td><%= item.Ingredients %></td>
+                      </tr>
+                      <% }); %>
+                    </tbody>
+                  </table>
+                  <!-- End Table with stripped rows -->
+                </div>
+              </div>
+            </div>
+          </div>
         </div>
       </section>
+
+      <!-- End Menu Section -->
+      <!-- <section class="sample-page">
+      <div class="container" data-aos="fade-up">
+
+        <p>
+          You can duplicate this sample page and create any number of inner pages you like!
+        </p>
+
+      </div>
+    </section> -->
     </main>
     <!-- End #main -->
 

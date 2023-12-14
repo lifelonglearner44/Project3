@@ -52,7 +52,7 @@ const knex = require('knex')({
     host: process.env.RDS_HOSTNAME || 'localhost',
     user: process.env.RDS_USERNAME || 'postgres',
     password: process.env.RDS_PASSWORD || 'password',
-    database: process.env.RDS_DB_NAME || 'ebdb',
+    database: process.env.RDS_DB_NAME || 'NutritionDB',
     port: process.env.RDS_PORT || 5432,
     ssl: process.env.DB_SSL ? { rejectUnauthorized: false } : false,
   },
@@ -104,6 +104,45 @@ app.get('/users-profile.html', (req, res) => {
   res.sendFile(path.join(__dirname, '/users-profile.html'));
 });
 
+//  recipies page with ejs
+app.get('/recipes.ejs', async (req, res) => {
+  try {
+    const data = await knex.select().from('Recipes');
+
+    // Render the EJS template
+    res.render('recipes', { data });
+    /* pass data to the template if needed */
+  } catch (error) {
+    console.error(error);
+    res.status(500).send('Internal Server Error');
+  }
+});
+
+//  saved recipies page with ejs
+app.get('/savedRecipes.ejs', async (req, res) => {
+  try {
+    const data = await knex
+      .select('*')
+      .from('public.Recipes')
+      .innerJoin(
+        'public.PersonRecipes',
+        'public.Recipes.RecipeID',
+        '=',
+        'public.PersonRecipes.RecipeID'
+      )
+      .where('public.PersonRecipes.PersonID', 4)
+      .orderBy('public.Recipes.RecipeID', 'asc');
+
+    // Render the EJS template
+    res.render('savedRecipes', { data });
+
+    /* pass data to the template if needed */
+  } catch (error) {
+    console.error(error);
+    res.status(500).send('Internal Server Error');
+  }
+});
+
 //  admin report page view with ejs
 app.get('/adminReport.ejs', authenticate, async (req, res) => {
   try {
@@ -121,18 +160,18 @@ app.get('/adminReport.ejs', authenticate, async (req, res) => {
 });
 
 // login
-app.post('/loginAttempt', async (req, res) => {
+app.post('/login', async (req, res) => {
   try {
     console.log('req.body:', req.body);
-    const { Username, Password } = req.body;
+    const { Email, Password } = req.body;
 
-    const user = await knex('User').where({ Username, Password }).first();
+    const user = await knex('Person').where({ Email, Password }).first();
     console.log('user', user);
 
     if (user) {
       // Set the session variable on successful login
       req.session.loggedIn = true;
-      res.redirect('/adminReport.ejs');
+      // res.redirect('/adminReport.ejs');
     } else {
       // If no user is found, handle the authentication failure
       res.status(401).send('Invalid username or password');
@@ -140,6 +179,8 @@ app.post('/loginAttempt', async (req, res) => {
     }
   } catch (error) {
     console.error('Database Query Error:', error);
+    res.status(401).send('Invalid username or password');
+    res.redirect('/pages-login.html');
     // res.status(500).send('Internal Server Error');
   }
 });
