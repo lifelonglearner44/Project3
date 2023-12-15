@@ -153,7 +153,7 @@ app.get('/savedRecipes.ejs', async (req, res) => {
       res.render('savedRecipes', { data, loggedInPersonID });
     } else {
       // User is not logged in, render the EJS template without data
-      res.render('savedRecipes', { data: [] });
+      res.render('savedRecipes', { data: [], loggedInPersonID: null });
     }
   } catch (error) {
     console.error(error);
