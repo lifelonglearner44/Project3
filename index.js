@@ -1,7 +1,8 @@
 // Group 1-1
 // Members:  McKay Boody, Nick Dizes, Lindsey Gordon, Mo Galbraith
-// Program Description: This Program is a website for the Provo City Social Media Health Committee to
-// improve the mental health of Provo residents through improving the use of Social Media. The main components of the website are a survey, dashboard, admin report, and admin login features.
+// Program Description:
+// This website application is for Diabetics to find good recipes that help with their symptoms, and it
+// provides users the ability to create an account so that they can log in and save recipes to use later.
 
 const express = require('express');
 const session = require('express-session');
@@ -94,19 +95,6 @@ app.get('/pages-login.html', (req, res) => {
 app.get('/pages-signup.html', (req, res) => {
   res.sendFile(path.join(__dirname, '/pages-signup.html'));
 });
-// admin register page view
-app.get('/adminRegister.ejs', authenticate, (req, res) => {
-  const isAuthenticated = req.session.loggedIn;
-  if (isAuthenticated) {
-    res.render('adminRegister', { isAuthenticated });
-  } else if (!isAuthenticated) {
-    res.redirect('/pages-login.html');
-  }
-});
-// admin profile page view
-app.get('/users-profile.html', (req, res) => {
-  res.sendFile(path.join(__dirname, '/users-profile.html'));
-});
 
 //  recipes page with ejs
 app.get('/recipes.ejs', async (req, res) => {
@@ -115,7 +103,6 @@ app.get('/recipes.ejs', async (req, res) => {
     if (req.session.loggedIn) {
       const loggedInPersonID = req.session.personID;
       res.render('recipes', { data, loggedInPersonID });
-      console.log('loggedInPersonID', loggedInPersonID);
     } else {
       res.render('recipes', { data, loggedInPersonID: null });
     }
@@ -133,9 +120,6 @@ app.get('/savedRecipes.ejs', async (req, res) => {
     // Check if the user is logged in
     if (req.session.loggedIn) {
       const loggedInPersonID = req.session.personID;
-      console.log('loggedInPersonID', loggedInPersonID);
-      console.log('req.session', req.session);
-
       // Fetch saved recipes for the logged-in user
       const data = await knex
         .select('*')
@@ -155,22 +139,6 @@ app.get('/savedRecipes.ejs', async (req, res) => {
       // User is not logged in, render the EJS template without data
       res.render('savedRecipes', { data: [], loggedInPersonID: null });
     }
-  } catch (error) {
-    console.error(error);
-    res.status(500).send('Internal Server Error');
-  }
-});
-
-//  admin report page view with ejs
-app.get('/adminReport.ejs', authenticate, async (req, res) => {
-  try {
-    const isAuthenticated = req.session.loggedIn;
-
-    const data = await knex.select().from('Survey_Responses');
-
-    // Render the EJS template
-    res.render('adminReport', { data, isAuthenticated });
-    /* pass data to the template if needed */
   } catch (error) {
     console.error(error);
     res.status(500).send('Internal Server Error');
@@ -204,7 +172,7 @@ app.post('/login', async (req, res) => {
   }
 });
 
-// Example logout route
+//  logout route
 app.get('/logout', (req, res) => {
   // Clear the session variable on logout
   req.session.destroy((err) => {
@@ -253,86 +221,6 @@ app.post('/saveRecipe', async (req, res) => {
     const savedRecipeResult = await knex('PersonRecipes').insert(savedRecipe);
     console.log('savedRecipeResult', savedRecipeResult);
     res.redirect('/savedRecipes.ejs');
-  } catch (error) {
-    console.error('Database Insert Error:', error);
-    res.status(500).send('Internal Server Error');
-  }
-});
-
-// posting to the database
-app.post('/surveyPost', async (req, res) => {
-  try {
-    // console.log('req.body:', req.body);
-    // console.log('req', req);
-    // // console.log('req', req);
-    const Survey_Responses = {
-      Origin: 'Provo',
-      Date: new Date(),
-      Time: new Date().toTimeString().slice(0, 8),
-      Age: req.body.Age,
-      Gender: req.body.Gender,
-      Relationship_Status: req.body.Relationship_Status,
-      Occupation_Status: req.body.Occupation_Status,
-      Use_Social_Media: req.body.Use_Social_Media,
-      Average_Usage_Hours: req.body.Average_Usage_Hours,
-      Without_Specific_Purpose: req.body.Without_Specific_Purpose,
-      Distracted_From_Tasks: req.body.Distracted_From_Tasks,
-      Restless_Without: req.body.Restless_Without,
-      Easily_Distracted: req.body.Easily_Distracted,
-      Bothered_By_Worries: req.body.Bothered_By_Worries,
-      Difficulty_Concentrating: req.body.Difficulty_Concentrating,
-      Comparison_Through_Social_Media: req.body.Comparison_Through_Social_Media,
-      Comparison_Feelings: req.body.Comparison_Feelings,
-      Validation_From_Social_Media: req.body.Validation_From_Social_Media,
-      Depressed_Or_Down: req.body.Depressed_Or_Down,
-      Interest_In_Daily_Activities: req.body.Interest_In_Daily_Activities,
-      Sleep_Issues: req.body.Sleep_Issues,
-    };
-
-    // console.log('Survey_Responses:', Survey_Responses);
-
-    const surveyResult = await knex('Survey_Responses')
-      .insert(Survey_Responses)
-      .returning('Survey_Response_ID');
-
-    // Assuming surveyResult is an array with the generated IDs
-    const Survey_Response_ID = surveyResult[0].Survey_Response_ID;
-
-    // Now you can use Survey_Response_ID in your subsequent logic
-    console.log('Generated Survey_Response_ID:', Survey_Response_ID);
-
-    // console.log('id', surveyResult[0]);
-    // // console.log('Insert survey Result:', surveyResult);
-    const Organization_IDs = req.body.Organization_ID || [];
-    const Social_Platform_IDs = req.body.Social_Platform_ID || [];
-    // console.log('Organization_IDs', Organization_IDs);
-    // console.log('Social_Platform_IDs', Social_Platform_IDs);
-    const mainEntries = [];
-
-    // loop through the Organization_IDs and Social_Platform_IDs arrays
-    for (const organizationID of Organization_IDs) {
-      for (const socialPlatformID of Social_Platform_IDs) {
-        mainEntries.push({
-          Survey_Response_ID: Survey_Response_ID,
-          Organization_ID: organizationID,
-          Social_Platform_ID: socialPlatformID,
-        });
-      }
-    }
-
-    // console.log('Main Entries:', mainEntries);
-
-    // Use a for loop to insert each entry into the 'Main' table
-    for (const entry of mainEntries) {
-      try {
-        await knex('Main').insert(entry);
-        console.log('Inserted:', entry);
-      } catch (error) {
-        console.error('Error inserting:', error);
-      }
-    }
-
-    res.send('Data successfully inserted into the table!');
   } catch (error) {
     console.error('Database Insert Error:', error);
     res.status(500).send('Internal Server Error');
