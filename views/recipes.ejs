@@ -65,7 +65,8 @@
         <nav id="navbar" class="navbar">
           <ul>
             <li><a href="index.html">Home</a></li>
-            <li><a href="pages-recipes.html">Recipes</a></li>
+            <li><a href="recipes.ejs">All Recipes</a></li>
+            <li><a href="savedRecipes.ejs">Saved Recipes</a></li>
             <li><a href="pages-about.html">About</a></li>
 
             <li><a href="pages-contact.html">Contact</a></li>
@@ -95,14 +96,14 @@
       </div>
       <!-- End Breadcrumbs -->
       <!-- ======= Menu Section ======= -->
-      <section
+      <!-- css table -->
+      <!-- <section
         style="display: flex; justify-content: center; align-items: center"
       >
         <div class="row">
           <div class="col-lg-12">
             <div class="card" style="border: none">
               <div class="card-body">
-                <!-- Table with stripped rows -->
                 <div>
                   <table style="width: 70%; margin-bottom: 0">
                     <thead>
@@ -139,7 +140,6 @@
                         </th>
                       </tr>
                     </thead>
-                    <!-- ejs inserts -->
                     <tbody>
                       <% data.forEach(item => { %>
                       <tr>
@@ -178,6 +178,54 @@
                       <% }); %>
                     </tbody>
                   </table>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </section> -->
+      <% if (loggedInPersonID) { %>
+      <section class="section">
+        <div class="row">
+          <div class="col-lg-12">
+            <div class="card">
+              <div class="card-body">
+                <!-- Table with stripped rows -->
+                <div class="table-responsive">
+                  <table class="table datatable custom-table">
+                    <thead>
+                      <tr>
+                        <th>Title</th>
+                        <th>Instructions</th>
+                        <th>Ingredients</th>
+                        <th>Save Recipe</th>
+                      </tr>
+                    </thead>
+                    <!-- ejs inserts -->
+                    <tbody>
+                      <% data.forEach(item => { %>
+                      <tr>
+                        <td><%= item.Title %></td>
+                        <td>
+                          <%- item.Instructions.replace(/\n/g, `
+                          <br />
+                          `) %>
+                        </td>
+                        <td><%= item.Ingredients %></td>
+                        <td>
+                          <form action="/saveRecipe" method="post">
+                            <input
+                              type="hidden"
+                              name="recipeID"
+                              value="<%= item.RecipeID %>"
+                            />
+                            <button type="submit">Save</button>
+                          </form>
+                        </td>
+                      </tr>
+                      <% }); %>
+                    </tbody>
+                  </table>
                   <!-- End Table with stripped rows -->
                 </div>
               </div>
@@ -185,7 +233,25 @@
           </div>
         </div>
       </section>
-
+      <% } else { %>
+      <div
+        style="
+          display: flex;
+          flex-direction: column;
+          align-items: center;
+          justify-content: flex-start;
+        "
+      >
+        <h2 style="margin-bottom: 20px">
+          <!-- Your content for users who are not logged in here -->
+          You are not Logged in
+          <br />
+          <br />
+          Click
+          <a href="/pages-login.html">here</a>
+          to Login and Save New Recipes
+        </h2>
+      </div>
       <section class="section">
         <div class="row">
           <div class="col-lg-12">
@@ -223,6 +289,7 @@
           </div>
         </div>
       </section>
+      <% } %>
 
       <!-- End Menu Section -->
       <!-- <section class="sample-page">

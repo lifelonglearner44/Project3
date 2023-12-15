@@ -86,7 +86,7 @@
       <div class="breadcrumbs">
         <div class="container">
           <div class="d-flex justify-content-between align-items-center">
-            <h2>About</h2>
+            <h2>Login</h2>
             <!-- <ol>
               <li><a href="index.html">Home</a></li>
               <li>Sample Inner Page</li>
@@ -95,83 +95,144 @@
         </div>
       </div>
       <!-- End Breadcrumbs -->
-      <!-- ======= About Section ======= -->
-      <section id="about" class="about">
+      <!-- ======= Login Section ======= -->
+      <section id="login" class="login">
         <div class="container" data-aos="fade-up">
           <div class="section-header">
-            <h2>About Us</h2>
+            <h2>Login</h2>
             <p>
-              Learn More
-              <span>About Us</span>
+              Save
+              <span>Your</span>
+              Recipes
             </p>
           </div>
 
-          <div class="row gy-4">
+          <div class="row g-0">
             <div
-              class="col-lg-7 position-relative about-img"
-              style="
-                background-repeat: no-repeat;
-                background-position: center;
-                background-image: url(assets/img/about.jpg);
-                width: 50%;
-              "
-              data-aos="fade-up"
-              data-aos-delay="150"
-            >
-              <!-- <div class="call-us position-absolute">
-            <h4>Call us</h4>
-            <p>(801)-422-5167</p>
-          </div>
-             <div class="position-relative mt-4">
-            <img src="assets/img/about-2.jpg" class="img-fluid" alt="" />
-            <a
-              href="https://www.youtube.com/watch?v=LXb3EKWsInQ"
-              class="glightbox play-btn"
-            ></a>
-          </div>-->
-            </div>
-            <div
-              class="col-lg-5 d-flex align-items-end"
-              style="width: 50%"
-              data-aos="fade-up"
-              data-aos-delay="300"
-            >
-              <div class="content ps-0 ps-lg-5">
-                <p class="fst-italic">
-                  We are a team of BYU students who are passionate about
-                  supporting those with type 2 diabetes and enabling them to
-                  improve their quality of life through nutritional guidance.
-                  This website will provide the following nutritional tools to
-                  help you to succeed.
-                </p>
-                <ul>
-                  <li>
-                    <i class="bi bi-check2-all"></i>
-                    Dietician-crafted recipes that will be filling and flavorful
-                    without requiring lots of time or culinary skill.
-                  </li>
-                  <li>
-                    <i class="bi bi-check2-all"></i>
-                    A free account to save your favorite recipes so that you can
-                    quickly refer to them later.
-                  </li>
-                  <li>
-                    <i class="bi bi-check2-all"></i>
-                    A catalog of general nutritional advice for those with type
-                    2 diabetes.
-                  </li>
-                </ul>
-                <p>
-                  Start your journey to better health today. Explore our
-                  resources, create your free account, and take control of your
-                  nutritional well-being with confidence.
-                </p>
-              </div>
+              class="col-lg-4 reservation-img"
+              style="background-image: url(assets/img/reservation.jpg)"
+              data-aos="zoom-out"
+              data-aos-delay="200"
+            ></div>
+
+            <div class="col-lg-8 d-flex align-items-center reservation-form-bg">
+              <!--    class="php-email-form"
+                 -->
+              <form
+                role="form"
+                action="signup"
+                style="padding: 40px"
+                method="post"
+                data-aos="fade-up"
+                data-aos-delay="100"
+              >
+                <div class="row gy-4">
+                  <div class="col-lg-4 col-md-6">
+                    <input
+                      style="
+                        border-radius: 0;
+                        box-shadow: none;
+                        font-size: 14px;
+                        border-radius: 0;
+                        padding: 12px 15px;
+                      "
+                      type="text"
+                      class="form-control"
+                      name="FirstName"
+                      id="FirstName"
+                      placeholder="First Name"
+                    />
+                    <div class="validate"></div>
+                  </div>
+                  <div class="col-lg-4 col-md-6">
+                    <input
+                      style="
+                        border-radius: 0;
+                        box-shadow: none;
+                        font-size: 14px;
+                        border-radius: 0;
+                        padding: 12px 15px;
+                      "
+                      type="text"
+                      class="form-control"
+                      name="LastName"
+                      id="LastName"
+                      placeholder="Last Name"
+                    />
+                    <div class="validate"></div>
+                  </div>
+                  <br />
+                  <br />
+                  <div class="col-lg-4 col-md-6">
+                    <input
+                      style="
+                        border-radius: 0;
+                        box-shadow: none;
+                        font-size: 14px;
+                        border-radius: 0;
+                        padding: 12px 15px;
+                      "
+                      type="email"
+                      class="form-control"
+                      name="Email"
+                      id="Email"
+                      placeholder="Your Email"
+                      data-rule="email"
+                      data-msg="Please enter a valid email"
+                    />
+                    <div class="validate"></div>
+                  </div>
+                  <div class="col-lg-4 col-md-6">
+                    <input
+                      style="
+                        border-radius: 0;
+                        box-shadow: none;
+                        font-size: 14px;
+                        border-radius: 0;
+                        padding: 12px 15px;
+                      "
+                      type="password"
+                      class="form-control"
+                      name="Password"
+                      id="Password"
+                      placeholder="Password"
+                      data-rule="password"
+                      data-msg="Please enter a valid password"
+                    />
+                    <div class="validate"></div>
+                  </div>
+                  <div class="mb-3">
+                    <!-- <div class="loading">Loading</div> -->
+                    <div class="error-message"></div>
+                    <!-- <div class="sent-message">
+                      Check your email for Sign Up confirmation
+                    </div> -->
+                  </div>
+                  <div class="text-center">
+                    <button
+                      type="submit"
+                      style="
+                        background: var(--color-primary);
+                        border: 0;
+                        padding: 14px 60px;
+                        color: #fff;
+                        transition: 0.4s;
+                        border-radius: 50px;
+                        background: #ec2727;
+                      "
+                    >
+                      Sign Up
+                    </button>
+                  </div>
+                </div>
+              </form>
             </div>
           </div>
         </div>
       </section>
-      <!-- End About Section -->
+
+      <!-- End Login Form -->
+      <!--  -->
     </main>
     <!-- End #main -->
 

@@ -90,6 +90,10 @@ app.get('/pages-contact.html', (req, res) => {
 app.get('/pages-login.html', (req, res) => {
   res.sendFile(path.join(__dirname, '/pages-login.html'));
 });
+// signup page view
+app.get('/pages-signup.html', (req, res) => {
+  res.sendFile(path.join(__dirname, '/pages-signup.html'));
+});
 // admin register page view
 app.get('/adminRegister.ejs', authenticate, (req, res) => {
   const isAuthenticated = req.session.loggedIn;
@@ -108,9 +112,14 @@ app.get('/users-profile.html', (req, res) => {
 app.get('/recipes.ejs', async (req, res) => {
   try {
     const data = await knex.select().from('Recipes');
-
+    if (req.session.loggedIn) {
+      const loggedInPersonID = req.session.personID;
+      res.render('recipes', { data, loggedInPersonID });
+      console.log('loggedInPersonID', loggedInPersonID);
+    } else {
+      res.render('recipes', { data, loggedInPersonID: null });
+    }
     // Render the EJS template
-    res.render('recipes', { data });
     /* pass data to the template if needed */
   } catch (error) {
     console.error(error);
@@ -121,22 +130,31 @@ app.get('/recipes.ejs', async (req, res) => {
 //  saved recipes page with ejs
 app.get('/savedRecipes.ejs', async (req, res) => {
   try {
-    const data = await knex
-      .select('*')
-      .from('public.Recipes')
-      .innerJoin(
-        'public.PersonRecipes',
-        'public.Recipes.RecipeID',
-        '=',
-        'public.PersonRecipes.RecipeID'
-      )
-      .where('public.PersonRecipes.PersonID', 4)
-      .orderBy('public.Recipes.RecipeID', 'asc');
+    // Check if the user is logged in
+    if (req.session.loggedIn) {
+      const loggedInPersonID = req.session.personID;
+      console.log('loggedInPersonID', loggedInPersonID);
+      console.log('req.session', req.session);
 
-    // Render the EJS template
-    res.render('savedRecipes', { data });
+      // Fetch saved recipes for the logged-in user
+      const data = await knex
+        .select('*')
+        .from('public.Recipes')
+        .innerJoin(
+          'public.PersonRecipes',
+          'public.Recipes.RecipeID',
+          '=',
+          'public.PersonRecipes.RecipeID'
+        )
+        .where('public.PersonRecipes.PersonID', loggedInPersonID)
+        .orderBy('public.Recipes.RecipeID', 'asc');
 
-    /* pass data to the template if needed */
+      // Render the EJS template
+      res.render('savedRecipes', { data, loggedInPersonID });
+    } else {
+      // User is not logged in, render the EJS template without data
+      res.render('savedRecipes', { data: [] });
+    }
   } catch (error) {
     console.error(error);
     res.status(500).send('Internal Server Error');
@@ -171,7 +189,8 @@ app.post('/login', async (req, res) => {
     if (user) {
       // Set the session variable on successful login
       req.session.loggedIn = true;
-      // res.redirect('/adminReport.ejs');
+      req.session.personID = user.PersonID;
+      res.redirect('/savedRecipes.ejs');
     } else {
       // If no user is found, handle the authentication failure
       res.status(401).send('Invalid username or password');
@@ -196,27 +215,44 @@ app.get('/logout', (req, res) => {
     res.redirect('/index.html');
   });
 });
-// posting to the database
-app.post('/registerNewAccount', async (req, res) => {
+// create a new account
+app.post('/signup', async (req, res) => {
   try {
     console.log('req.body:', req.body);
-    let { Username } = req.body;
-    const usernameCheck = await knex('User').where({ Username }).first();
-    console.log('usernameCheck', usernameCheck);
-    if (usernameCheck) {
+    let { Email } = req.body;
+    const emailCheck = await knex('Person').where({ Email }).first();
+    console.log('emailCheck', emailCheck);
+    if (emailCheck) {
       res.status(401).send('Username already exists');
-    } else if (!usernameCheck) {
-      const User = {
-        First_Name: req.body.First_Name,
-        Last_Name: req.body.Last_Name,
-        Username: req.body.Username,
+    } else if (!emailCheck) {
+      const Person = {
+        FirstName: req.body.FirstName,
+        LastName: req.body.LastName,
         Email: req.body.Email,
         Password: req.body.Password,
       };
-      const surveyResult = await knex('User').insert(User);
-      console.log('Insert survey Result:', surveyResult);
-      res.send('User successfully created!');
+      const personResult = await knex('Person').insert(Person);
+      console.log('Insert Person Result:', personResult);
+      res.redirect('/pages-login.html');
     }
+  } catch (error) {
+    console.error('Database Insert Error:', error);
+    res.status(500).send('Internal Server Error');
+  }
+});
+
+// saving a recipe to a user's account
+app.post('/saveRecipe', async (req, res) => {
+  try {
+    console.log('req.body:', req.body);
+    const savedRecipe = {
+      PersonID: req.session.personID,
+      RecipeID: req.body.recipeID,
+    };
+    console.log('savedRecipe', savedRecipe);
+    const savedRecipeResult = await knex('PersonRecipes').insert(savedRecipe);
+    console.log('savedRecipeResult', savedRecipeResult);
+    res.redirect('/savedRecipes.ejs');
   } catch (error) {
     console.error('Database Insert Error:', error);
     res.status(500).send('Internal Server Error');

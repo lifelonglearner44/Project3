@@ -65,7 +65,8 @@
         <nav id="navbar" class="navbar">
           <ul>
             <li><a href="index.html">Home</a></li>
-            <li><a href="pages-recipes.html">Recipes</a></li>
+            <li><a href="recipes.ejs">All Recipes</a></li>
+            <li><a href="savedRecipes.ejs">Saved Recipes</a></li>
             <li><a href="pages-about.html">About</a></li>
 
             <li><a href="pages-contact.html">Contact</a></li>
@@ -186,6 +187,7 @@
         </div>
       </section>
 
+      <% if (data.length > 0) { %>
       <section class="section">
         <div class="row">
           <div class="col-lg-12">
@@ -223,6 +225,45 @@
           </div>
         </div>
       </section>
+      <% } else if (loggedInPersonID) { %>
+      <div
+        style="
+          display: flex;
+          flex-direction: column;
+          align-items: center;
+          justify-content: flex-start;
+          height: 100vh;
+        "
+      >
+        <h2 style="margin-bottom: 20px">
+          You have no saved recipes.
+          <br />
+          <br />
+          Click
+          <a href="/recipes.ejs">here</a>
+          to view and save new recipes
+        </h2>
+      </div>
+      <% } else { %>
+      <div
+        style="
+          display: flex;
+          flex-direction: column;
+          align-items: center;
+          justify-content: flex-start;
+          height: 100vh;
+        "
+      >
+        <h2 style="margin-bottom: 20px">
+          There are no saved recipes because you are not logged in.
+          <br />
+          <br />
+          Click
+          <a href="/pages-login.html">here</a>
+          to Login
+        </h2>
+      </div>
+      <% } %>
 
       <!-- End Menu Section -->
       <!-- <section class="sample-page">
