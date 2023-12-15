@@ -70,6 +70,7 @@
             <li><a href="pages-about.html">About</a></li>
 
             <li><a href="pages-contact.html">Contact</a></li>
+            <li><a href="logout">Logout</a></li>
           </ul>
         </nav>
         <!-- .navbar -->
@@ -86,7 +87,7 @@
       <div class="breadcrumbs">
         <div class="container">
           <div class="d-flex justify-content-between align-items-center">
-            <h2>Recipes</h2>
+            <h2>All Recipes</h2>
             <!-- <ol>
               <li><a href="index.html">Home</a></li>
               <li>Sample Inner Page</li>
@@ -185,41 +186,113 @@
         </div>
       </section> -->
       <% if (loggedInPersonID) { %>
-      <section class="section">
+      <!--         class="section"
+ -->
+      <section
+        style="display: flex; justify-content: center; align-items: center"
+      >
         <div class="row">
           <div class="col-lg-12">
             <div class="card">
-              <div class="card-body">
-                <!-- Table with stripped rows -->
+              <div class="card-body" style="border: none">
+                <!-- Table with stripped rows 
+                 -->
                 <div class="table-responsive">
-                  <table class="table datatable custom-table">
+                  <!-- class="table datatable custom-table" -->
+                  <table style="width: 70%; margin-bottom: 0; margin: 0 auto">
                     <thead>
                       <tr>
-                        <th>Title</th>
-                        <th>Instructions</th>
-                        <th>Ingredients</th>
-                        <th>Save Recipe</th>
+                        <th
+                          style="
+                            border: 1px solid #dddddd;
+                            text-align: left;
+                            padding: 8px;
+                            width: 20%;
+                          "
+                        >
+                          Title
+                        </th>
+                        <th
+                          style="
+                            border: 1px solid #dddddd;
+                            text-align: left;
+                            padding: 8px;
+                            width: 40%;
+                          "
+                        >
+                          Instructions
+                        </th>
+                        <th
+                          style="
+                            border: 1px solid #dddddd;
+                            text-align: left;
+                            padding: 8px;
+                            width: 30%;
+                          "
+                        >
+                          Ingredients
+                        </th>
+                        <th
+                          style="
+                            border: 1px solid #dddddd;
+                            text-align: left;
+                            padding: 8px;
+                            width: 10%;
+                          "
+                        >
+                          Save Recipe
+                        </th>
                       </tr>
                     </thead>
                     <!-- ejs inserts -->
                     <tbody>
                       <% data.forEach(item => { %>
                       <tr>
-                        <td><%= item.Title %></td>
-                        <td>
+                        <td
+                          style="
+                            border: 1px solid #dddddd;
+                            text-align: left;
+                            padding: 8px;
+                          "
+                        >
+                          <%= item.Title %>
+                        </td>
+                        <td
+                          style="
+                            border: 1px solid #dddddd;
+                            text-align: left;
+                            padding: 8px;
+                          "
+                        >
                           <%- item.Instructions.replace(/\n/g, `
                           <br />
                           `) %>
                         </td>
-                        <td><%= item.Ingredients %></td>
-                        <td>
+                        <td
+                          style="
+                            border: 1px solid #dddddd;
+                            text-align: left;
+                            padding: 8px;
+                          "
+                        >
+                          <%= item.Ingredients %>
+                        </td>
+                        <td
+                          style="
+                            border: 1px solid #dddddd;
+                            text-align: left;
+                            padding: 8px;
+                          "
+                        >
                           <form action="/saveRecipe" method="post">
                             <input
                               type="hidden"
                               name="recipeID"
                               value="<%= item.RecipeID %>"
                             />
-                            <button type="submit">Save</button>
+                            <button type="submit" class="btn btn-primary">
+                              Save
+                            </button>
                           </form>
                         </td>
                       </tr>
@@ -252,32 +325,85 @@
           to Login and Save New Recipes
         </h2>
       </div>
-      <section class="section">
+      <!--  class="section" -->
+      <section
+        style="display: flex; justify-content: center; align-items: center"
+      >
         <div class="row">
           <div class="col-lg-12">
             <div class="card">
-              <div class="card-body">
+              <div class="card-body" style="border: none">
                 <!-- Table with stripped rows -->
                 <div class="table-responsive">
-                  <table class="table datatable custom-table">
+                  <!--  class="table datatable custom-table -->
+                  <table style="width: 70%; margin-bottom: 0; margin: 0 auto">
                     <thead>
                       <tr>
-                        <th>Title</th>
-                        <th>Instructions</th>
-                        <th>Ingredients</th>
+                        <th
+                          style="
+                            border: 1px solid #dddddd;
+                            text-align: left;
+                            padding: 8px;
+                            width: 30%;
+                          "
+                        >
+                          Title
+                        </th>
+                        <th
+                          style="
+                            border: 1px solid #dddddd;
+                            text-align: left;
+                            padding: 8px;
+                            width: 40%;
+                          "
+                        >
+                          Instructions
+                        </th>
+                        <th
+                          style="
+                            border: 1px solid #dddddd;
+                            text-align: left;
+                            padding: 8px;
+                            width: 30%;
+                          "
+                        >
+                          Ingredients
+                        </th>
                       </tr>
                     </thead>
                     <!-- ejs inserts -->
                     <tbody>
                       <% data.forEach(item => { %>
                       <tr>
-                        <td><%= item.Title %></td>
-                        <td>
+                        <td
+                          style="
+                            border: 1px solid #dddddd;
+                            text-align: left;
+                            padding: 8px;
+                          "
+                        >
+                          <%= item.Title %>
+                        </td>
+                        <td
+                          style="
+                            border: 1px solid #dddddd;
+                            text-align: left;
+                            padding: 8px;
+                          "
+                        >
                           <%- item.Instructions.replace(/\n/g, `
                           <br />
                           `) %>
                         </td>
-                        <td><%= item.Ingredients %></td>
+                        <td
+                          style="
+                            border: 1px solid #dddddd;
+                            text-align: left;
+                            padding: 8px;
+                          "
+                        >
+                          <%= item.Ingredients %>
+                        </td>
                       </tr>
                       <% }); %>
                     </tbody>

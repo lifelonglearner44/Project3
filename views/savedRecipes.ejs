@@ -70,6 +70,7 @@
             <li><a href="pages-about.html">About</a></li>
 
             <li><a href="pages-contact.html">Contact</a></li>
+            <li><a href="logout">Logout</a></li>
           </ul>
         </nav>
         <!-- .navbar -->
@@ -96,6 +97,7 @@
       </div>
       <!-- End Breadcrumbs -->
       <!-- ======= Menu Section ======= -->
+      <% if (data.length > 0) { %>
       <section
         style="display: flex; justify-content: center; align-items: center"
       >
@@ -104,8 +106,8 @@
             <div class="card" style="border: none">
               <div class="card-body">
                 <!-- Table with stripped rows -->
-                <div>
-                  <table style="width: 70%; margin-bottom: 0">
+                <div class="table-responsive">
+                  <table style="width: 70%; margin-bottom: 0; margin: 0 auto">
                     <thead>
                       <tr>
                         <th
@@ -136,7 +138,7 @@
                             width: 30%;
                           "
                         >
-                          Ingredients
+                          Ingredients test
                         </th>
                       </tr>
                     </thead>
@@ -187,13 +189,11 @@
         </div>
       </section>
 
-      <% if (data.length > 0) { %>
-      <section class="section">
+      <!-- <section class="section">
         <div class="row">
           <div class="col-lg-12">
             <div class="card">
               <div class="card-body">
-                <!-- Table with stripped rows -->
                 <div class="table-responsive">
                   <table class="table datatable custom-table">
                     <thead>
@@ -203,7 +203,6 @@
                         <th>Ingredients</th>
                       </tr>
                     </thead>
-                    <!-- ejs inserts -->
                     <tbody>
                       <% data.forEach(item => { %>
                       <tr>
@@ -218,13 +217,12 @@
                       <% }); %>
                     </tbody>
                   </table>
-                  <!-- End Table with stripped rows -->
                 </div>
               </div>
             </div>
           </div>
         </div>
-      </section>
+      </section> -->
       <% } else if (loggedInPersonID > 0) { %>
       <div
         style="
