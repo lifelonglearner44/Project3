@@ -77,14 +77,30 @@ provides users the ability to create an account so that they can log in and save
             <li><a href="pages-about.html">About</a></li>
 
             <li><a href="pages-contact.html">Contact</a></li>
-            <li><a href="logout">Logout</a></li>
+        
+
+            <% if (loggedInPersonID) { %>
+              <!-- Display "My Account" link only if the user is logged in -->
+              <li><a href="pages-myaccount.html">My Account</a></li>
+            <% } %>
+          </ul>
+        </nav>
+
+
           </ul>
         </nav>
         <!-- .navbar -->
+        <% if (loggedInPersonID) { %>
+          <!-- Display "Logout" link only if the user is logged in -->
+          <a class="btn-login" href="/logout">Logout</a>
+          <i class="mobile-nav-toggle mobile-nav-show bi bi-list"></i>
+          <i class="mobile-nav-toggle mobile-nav-hide d-none bi bi-x"></i>
+        <% } else { %>
+          <a class="btn-login" href="pages-login.html">Login</a>
+          <i class="mobile-nav-toggle mobile-nav-show bi bi-list"></i>
+          <i class="mobile-nav-toggle mobile-nav-hide d-none bi bi-x"></i>
+        <% } %>
 
-        <a class="btn-login" href="pages-login.html">Login</a>
-        <i class="mobile-nav-toggle mobile-nav-show bi bi-list"></i>
-        <i class="mobile-nav-toggle mobile-nav-hide d-none bi bi-x"></i>
       </div>
     </header>
     <!-- End Header -->
@@ -227,7 +243,7 @@ provides users the ability to create an account so that they can log in and save
             });
           });
         </script>
-        
+
       <section
         style="display: flex; justify-content: center; align-items: center"
       >

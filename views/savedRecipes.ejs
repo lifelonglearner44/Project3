@@ -77,14 +77,30 @@ provides users the ability to create an account so that they can log in and save
             <li><a href="pages-about.html">About</a></li>
 
             <li><a href="pages-contact.html">Contact</a></li>
-            <li><a href="logout">Logout</a></li>
+        
+
+            <% if (loggedInPersonID) { %>
+              <!-- Display "My Account" link only if the user is logged in -->
+              <li><a href="pages-myaccount.html">My Account</a></li>
+            <% } %>
+          </ul>
+        </nav>
+
+
           </ul>
         </nav>
         <!-- .navbar -->
+        <% if (loggedInPersonID) { %>
+          <!-- Display "Logout" link only if the user is logged in -->
+          <a class="btn-login" href="/logout">Logout</a>
+          <i class="mobile-nav-toggle mobile-nav-show bi bi-list"></i>
+          <i class="mobile-nav-toggle mobile-nav-hide d-none bi bi-x"></i>
+        <% } else { %>
+          <a class="btn-login" href="pages-login.html">Login</a>
+          <i class="mobile-nav-toggle mobile-nav-show bi bi-list"></i>
+          <i class="mobile-nav-toggle mobile-nav-hide d-none bi bi-x"></i>
+        <% } %>
 
-        <a class="btn-login" href="pages-login.html">Login</a>
-        <i class="mobile-nav-toggle mobile-nav-show bi bi-list"></i>
-        <i class="mobile-nav-toggle mobile-nav-hide d-none bi bi-x"></i>
       </div>
     </header>
     <!-- End Header -->
@@ -148,111 +164,122 @@ provides users the ability to create an account so that they can log in and save
           <div class="col-lg-12">
             <div class="card" style="border: none">
               <div class="card-body">
-                <!-- Table with stripped rows -->
-                <div class="table-responsive">
-                  <table style="width: 70%; margin-bottom: 0; margin: 0 auto">
-                    <thead>
-                      <tr>
-                        <th
-                          style="
-                            border: 1px solid #dddddd;
-                            text-align: left;
-                            padding: 8px;
-                            width: 20%;
-                          "
-                        >
-                          Title
-                        </th>
-                        <th
-                          style="
-                            border: 1px solid #dddddd;
-                            text-align: left;
-                            padding: 8px;
-                            width: 40%;
-                          "
-                        >
-                          Instructions
-                        </th>
-                        <th
-                          style="
-                            border: 1px solid #dddddd;
-                            text-align: left;
-                            padding: 8px;
-                            width: 20%;
-                          "
-                        >
-                          Ingredients
-                        </th>
-                        <th
-                          style="
-                            border: 1px solid #dddddd;
-                            text-align: left;
-                            padding: 8px;
-                            width: 20%;
-                          "
-                        >
-                          Delete
-                        </th>
-                      </tr>
-                    </thead>
-                    <!-- ejs inserts -->
-                    <tbody>
-                      <% data.forEach(item => { %>
-                      <tr>
-                        <td
-                          style="
-                            border: 1px solid #dddddd;
-                            text-align: left;
-                            padding: 8px;
-                          "
-                        >
-                          <%= item.Title %>
-                        </td>
-                        <td
-                          style="
-                            border: 1px solid #dddddd;
-                            text-align: left;
-                            padding: 8px;
-                          "
-                        >
-                          <%- item.Instructions.replace(/\n/g, `
-                          <br />
-                          `) %>
-                        </td>
-                        <td
-                          style="
-                            border: 1px solid #dddddd;
-                            text-align: left;
-                            padding: 8px;
-                          "
-                        >
-                          <%- item.Ingredients.replace(/\n/g, `
-                          <br />
-                          `) %>
-                        </td>
-                        <td
-                          style="
-                            border: 1px solid #dddddd;
-                            text-align: left;
-                            padding: 8px;
-                          "
-                        >
-                          <form action="/deleteSavedRecipe" method="post">
-                            <input
-                              type="hidden"
-                              name="recipeID"
-                              value="<%= item.RecipeID %>"
-                            />
-                            <button type="submit" class="btn btn-danger">
-                              Delete
-                            </button>
-                          </form>
-                        </td>
-                      </tr>
-                      <% }); %>
-                    </tbody>
-                  </table>
-                  <!-- End Table with stripped rows -->
+
+<!-- ... (your existing code) ... -->
+
+<!-- Table with stripped rows -->
+<div class="table-responsive">
+  <table style="width: 70%; margin-bottom: 0; margin: 0 auto">
+    <thead>
+      <tr>
+        <th style="border: 1px solid #dddddd; text-align: left; padding: 8px; width: 20%;">Title</th>
+        <th style="border: 1px solid #dddddd; text-align: left; padding: 8px; width: 40%;">Instructions</th>
+        <th style="border: 1px solid #dddddd; text-align: left; padding: 8px; width: 20%;">Ingredients</th>
+        <th style="border: 1px solid #dddddd; text-align: left; padding: 8px; width: 10%;">Edit</th>
+        <th style="border: 1px solid #dddddd; text-align: left; padding: 8px; width: 10%;">Delete</th>
+      </tr>
+    </thead>
+    <!-- ejs inserts -->
+    <tbody>
+      <% data.forEach(item => { %>
+        <tr>
+          <td style="border: 1px solid #dddddd; text-align: left; padding: 8px;">
+            <span id="title<%= item.RecipeID %>"><%= item.Title %></span>
+            <input type="text" id="editTitle<%= item.RecipeID %>" style="display: none;" value="<%= item.Title %>" />
+          </td>
+          <td style="border: 1px solid #dddddd; text-align: left; padding: 8px;">
+            <span id="instructions<%= item.RecipeID %>">
+              <%- item.Instructions.replace(/\n/g, `<br />`) %>
+            </span>
+            <textarea id="editInstructions<%= item.RecipeID %>" style="display: none;"><%- item.Instructions %></textarea>
+          </td>
+          <td style="border: 1px solid #dddddd; text-align: left; padding: 8px;">
+            <span id="ingredients<%= item.RecipeID %>">
+              <%- item.Ingredients.replace(/\n/g, `<br />`) %>
+            </span>
+            <textarea id="editIngredients<%= item.RecipeID %>" style="display: none;"><%- item.Ingredients %></textarea>
+          </td>
+          <td style="border: 1px solid #dddddd; text-align: left; padding: 8px;">
+            <button onclick="editRecipe('<%= item.RecipeID %>')">Edit</button>
+            <form id="editForm<%= item.RecipeID %>" action="/editSavedRecipe" method="post" style="display: none;">
+              <input type="hidden" name="recipeID" value="<%= item.RecipeID %>" />
+              <button type="submit" class="btn btn-success">Save</button>
+              <button type="button" onclick="cancelEdit('<%= item.RecipeID %>')" class="btn btn-secondary">Cancel</button>
+            </form>
+          </td>
+          <td style="border: 1px solid #dddddd; text-align: left; padding: 8px;">
+            <form action="/deleteSavedRecipe" method="post">
+              <input type="hidden" name="recipeID" value="<%= item.RecipeID %>" />
+              <button type="submit" class="btn btn-danger">Delete</button>
+            </form>
+          </td>
+        </tr>
+      <% }); %>
+    </tbody>
+  </table>
+</div>
+<!-- End Table with stripped rows -->
+
+<script>
+  function editRecipe(recipeID) {
+    // Hide original content
+    document.getElementById(`title${recipeID}`).style.display = 'none';
+    document.getElementById(`instructions${recipeID}`).style.display = 'none';
+    document.getElementById(`ingredients${recipeID}`).style.display = 'none';
+
+    // Show edit input fields
+    document.getElementById(`editTitle${recipeID}`).style.display = 'block';
+    document.getElementById(`editInstructions${recipeID}`).style.display = 'block';
+    document.getElementById(`editIngredients${recipeID}`).style.display = 'block';
+
+    // Set initial values of edit input fields
+    document.getElementById(`editTitle${recipeID}`).value = document.getElementById(`title${recipeID}`).textContent.trim();
+    document.getElementById(`editInstructions${recipeID}`).value = document.getElementById(`instructions${recipeID}`).textContent.trim();
+    document.getElementById(`editIngredients${recipeID}`).value = document.getElementById(`ingredients${recipeID}`).textContent.trim();
+
+    // Show edit form and hide edit button
+    document.getElementById(`editForm${recipeID}`).style.display = 'block';
+    event.target.style.display = 'none';
+
+    // Hide delete button
+    document.querySelector(`button[onclick="deleteRecipe('${recipeID}')"]`).style.display = 'none';
+  }
+
+  function cancelEdit(recipeID) {
+    // Show original content
+    document.getElementById(`title${recipeID}`).style.display = 'inline';
+    document.getElementById(`instructions${recipeID}`).style.display = 'inline';
+    document.getElementById(`ingredients${recipeID}`).style.display = 'inline';
+
+    // Hide edit input fields
+    document.getElementById(`editTitle${recipeID}`).style.display = 'none';
+    document.getElementById(`editInstructions${recipeID}`).style.display = 'none';
+    document.getElementById(`editIngredients${recipeID}`).style.display = 'none';
+
+    // Hide edit form and show edit button
+    document.getElementById(`editForm${recipeID}`).style.display = 'none';
+    document.querySelector(`button[onclick="editRecipe('${recipeID}')"]`).style.display = 'inline';
+
+    // Show delete button
+    document.querySelector(`button[onclick="deleteRecipe('${recipeID}')"]`).style.display = 'inline';
+  }
+
+  function deleteRecipe(recipeID) {
+    // You can add confirmation logic here if needed
+    document.querySelector(`form[action="/deleteSavedRecipe"] input[name="recipeID"]`).value = recipeID;
+  }
+</script>
+
+<!-- ... (your existing code) ... -->
+
+
+
+
+
+
+
+
+
                 </div>
               </div>
             </div>
