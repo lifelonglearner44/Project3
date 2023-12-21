@@ -105,6 +105,42 @@ provides users the ability to create an account so that they can log in and save
       <!-- End Breadcrumbs -->
       <!-- ======= Menu Section ======= -->
       <% if (data.length > 0) { %>
+
+<!-- Add a search input field -->
+<div class="container mt-4 mb-4">
+  <input
+    type="text"
+    id="recipeSearchInput"
+    class="form-control"
+    placeholder="Search by Recipe Title"
+  />
+</div>
+
+
+<script>
+  document.addEventListener('DOMContentLoaded', function () {
+    const recipeSearchInput = document.getElementById('recipeSearchInput');
+
+    recipeSearchInput.addEventListener('input', function () {
+      const searchTerm = recipeSearchInput.value.toLowerCase();
+
+      // Hide or show recipes based on the search term
+      const rows = document.querySelectorAll('tbody tr');
+      rows.forEach(function (row) {
+        const title = row.querySelector('td:first-child').innerText.toLowerCase();
+
+        if (title.includes(searchTerm)) {
+          row.style.display = '';
+        } else {
+          row.style.display = 'none';
+        }
+      });
+    });
+  });
+</script>
+
+
+
       <section
         style="display: flex; justify-content: center; align-items: center"
       >
