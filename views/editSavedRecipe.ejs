@@ -1,0 +1,45 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta content="width=device-width, initial-scale=1.0" name="viewport" />
+  <title>Edit Saved Recipe</title>
+  <!-- Add your meta tags, stylesheets, and other dependencies here -->
+</head>
+<body>
+  <!-- Add your header here -->
+  <!-- Example: -->
+  <header>
+    <h1>Edit Saved Recipe</h1>
+    <!-- Add navigation or other header content -->
+  </header>
+
+  <main>
+    <!-- Your form for editing the saved recipe -->
+    <form action="/updateSavedRecipe" method="post">
+      <!-- You can use the same structure as in your savedRecipes.ejs page -->
+      <!-- Include input fields for Title, Instructions, Ingredients, etc. -->
+      <label for="editTitle">Title:</label>
+      <input type="text" id="editTitle" name="editTitle" required />
+      
+      <label for="editInstructions">Instructions:</label>
+      <textarea id="editInstructions" name="editInstructions" required></textarea>
+      
+      <label for="editIngredients">Ingredients:</label>
+      <textarea id="editIngredients" name="editIngredients" required></textarea>
+
+      <!-- Add other input fields and buttons as needed -->
+
+      <button type="submit">Save Changes</button>
+    </form>
+  </main>
+
+  <!-- Add your footer here -->
+  <!-- Example: -->
+  <footer>
+    <!-- Add footer content, links, etc. -->
+  </footer>
+
+  <!-- Add your scripts and other dependencies here -->
+</body>
+</html>

@@ -77,14 +77,30 @@ provides users the ability to create an account so that they can log in and save
             <li><a href="pages-about.html">About</a></li>
 
             <li><a href="pages-contact.html">Contact</a></li>
-            <li><a href="logout">Logout</a></li>
+        
+
+            <% if (loggedInPersonID) { %>
+              <!-- Display "My Account" link only if the user is logged in -->
+              <li><a href="pages-myaccount.html">My Account</a></li>
+            <% } %>
+          </ul>
+        </nav>
+
+
           </ul>
         </nav>
         <!-- .navbar -->
+        <% if (loggedInPersonID) { %>
+          <!-- Display "Logout" link only if the user is logged in -->
+          <a class="btn-login" href="/logout">Logout</a>
+          <i class="mobile-nav-toggle mobile-nav-show bi bi-list"></i>
+          <i class="mobile-nav-toggle mobile-nav-hide d-none bi bi-x"></i>
+        <% } else { %>
+          <a class="btn-login" href="pages-login.html">Login</a>
+          <i class="mobile-nav-toggle mobile-nav-show bi bi-list"></i>
+          <i class="mobile-nav-toggle mobile-nav-hide d-none bi bi-x"></i>
+        <% } %>
 
-        <a class="btn-login" href="pages-login.html">Login</a>
-        <i class="mobile-nav-toggle mobile-nav-show bi bi-list"></i>
-        <i class="mobile-nav-toggle mobile-nav-hide d-none bi bi-x"></i>
       </div>
     </header>
     <!-- End Header -->
@@ -195,6 +211,39 @@ provides users the ability to create an account so that they can log in and save
       <% if (loggedInPersonID) { %>
       <!--         class="section"
  -->
+
+        <!-- Add a search input field -->
+        <div class="container mt-4 mb-4">
+          <input
+            type="text"
+            id="recipeSearchInput"
+            class="form-control"
+            placeholder="Search by Recipe Title"
+          />
+        </div>
+
+        <script>
+          document.addEventListener('DOMContentLoaded', function () {
+            const recipeSearchInput = document.getElementById('recipeSearchInput');
+        
+            recipeSearchInput.addEventListener('input', function () {
+              const searchTerm = recipeSearchInput.value.toLowerCase();
+        
+              // Hide or show recipes based on the search term
+              const rows = document.querySelectorAll('tbody tr');
+              rows.forEach(function (row) {
+                const title = row.querySelector('td:first-child').innerText.toLowerCase();
+        
+                if (title.includes(searchTerm)) {
+                  row.style.display = '';
+                } else {
+                  row.style.display = 'none';
+                }
+              });
+            });
+          });
+        </script>
+
       <section
         style="display: flex; justify-content: center; align-items: center"
       >
